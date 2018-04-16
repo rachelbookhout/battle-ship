@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 
 public class TrackingBoard extends Board {
     public TrackingBoard(int dimensions){
@@ -13,6 +14,7 @@ public class TrackingBoard extends Board {
       JButton[][] board = getBoard();
       for (int o = 0; o < dimensions; o++) {
         for (int i = 0; i < dimensions; i++) {
+          board[o][i].setVisible(true);
           board[o][i].addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae){
               decideShipFate((JButton) ae.getSource());
