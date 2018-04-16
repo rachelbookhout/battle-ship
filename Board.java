@@ -26,7 +26,6 @@ public abstract class Board extends JPanel{
       for (int i = 0; i < size; i++) {
         jbtnBoard[o][i] = new JButton(Integer.toString(i) + "," + Integer.toString(o));
         jbtnBoard[o][i].setForeground(Color.GREEN);
-        jbtnBoard[o][i].setBackground( Color.BLACK );
         this.add(jbtnBoard[o][i]);
         count++;
       }

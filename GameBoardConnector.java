@@ -5,7 +5,9 @@ import java.io.*;
 import java.util.*;
 
 public class GameBoardConnector{
-    public GameBoardConnector(){
+    private Board board;
 
+    public GameBoardConnector(Board board){
+      board = board;
     }
 }
