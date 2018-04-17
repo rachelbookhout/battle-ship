@@ -2,13 +2,13 @@ import java.awt.Color;
 
 
 public class Destroyer extends Ship {
-    protected int numOfShotsToSink;
+    protected int num = 2;
     protected String name;
       protected Color color;
 
     public Destroyer(){
         super();
-        numOfShotsToSink = 2;
+        numOfShotsToSink = num;
         name = "Destroyer";
         color = Color.PINK;
     }

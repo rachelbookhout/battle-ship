@@ -1,18 +1,14 @@
 public class Carrier extends Ship {
-    protected int numOfShotsToSink;
+    protected int num = 5;
     protected String name;
     public Carrier(){
         super();
-        numOfShotsToSink = 5;
+        numOfShotsToSink = num;
         name = "Carrier";
     }
 
     public String getName(){
       return name;
-    }
-
-    public int getShotsToSink(){
-      return numOfShotsToSink;
     }
 
     public boolean isShipSunk(){

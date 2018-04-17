@@ -1,13 +1,13 @@
 import java.awt.Color;
 
 public class BattleShip extends Ship {
-    protected int numOfShotsToSink;
+    protected int num = 4;
     protected String name;
       protected Color color;
 
     public BattleShip(){
         super();
-        numOfShotsToSink = 4;
+        numOfShotsToSink = num;
         name = "BattleShip";
         color = Color.CYAN;
     }

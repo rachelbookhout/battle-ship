@@ -2,12 +2,12 @@ import java.awt.Color;
 
 public class Cruiser extends Ship {
     protected String name;
-    protected int numOfShotsToSink;
-      protected Color color;
+    protected int num = 3;
+    protected Color color;
 
     public Cruiser(){
         super();
-        numOfShotsToSink = 3;
+        numOfShotsToSink = num;
         name = "Cruiser";
         color = Color.ORANGE;
     }
@@ -15,10 +15,6 @@ public class Cruiser extends Ship {
 
     public String getName(){
       return name;
-    }
-
-    public int getShotsToSink(){
-      return numOfShotsToSink;
     }
 
     public boolean isShipSunk(){

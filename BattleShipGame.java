@@ -141,8 +141,10 @@ class BattleShipGame{
   private void addShipToBoard(Ship ship){
     // write text prompt out
     playerBoard.setTempShip(ship);
-    dialogueBox.setText("Pick location to place");
-    // save ship to temp ship within board class
+    dialogueBox.setText("Pick your location to place the ship. Remember the ship uses " +
+    ship.numOfShotsToSink + "boxes");
+     // take look at location, make sure it's valid
+    // redisplay boxes
   }
 
   private void playGame(){

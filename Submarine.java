@@ -2,13 +2,13 @@ import java.awt.Color;
 
 
 public class Submarine extends Ship {
-    protected int numOfShotsToSink;
+    protected int num = 3;
     protected String name;
       protected Color color;
 
     public Submarine(){
         super();
-        numOfShotsToSink = 3;
+        numOfShotsToSink = num;
         name = "Submarine";
         color = Color.RED;
     }

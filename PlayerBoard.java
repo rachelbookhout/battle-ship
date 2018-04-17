@@ -32,6 +32,8 @@ public class PlayerBoard extends Board {
     }
 
     private void addShip(JButton button, Ship ship){
+      System.out.println("Location Size" + ship.getLocation().size());
+      System.out.println("Ships To Sink size" + ship.getShotsToSink());
       System.out.println("Adding ship");
       String text = button.getText();
       int index = text.indexOf(',');
@@ -40,7 +42,64 @@ public class PlayerBoard extends Board {
       int[] location = {firstNumber, secondNumber};
       ship.setLocation(location);
       JButton[][] board = getBoard();
-      board[firstNumber][secondNumber].setBackground(ship.color);
-      board[firstNumber][secondNumber].setOpaque(true);
+      board[secondNumber][firstNumber].setBackground(ship.color);
+      board[secondNumber][firstNumber].setOpaque(true);
+      if(checkLocation(ship)){
+        //** NEXT STEP
+      };
+    }
+
+    private boolean checkLocation(Ship ship){
+      if (ship.getLocation().size() >= ship.getShotsToSink()){
+        System.out.println("Checking location");
+        ArrayList<int[]> locations = ship.getLocation();
+        // borrowed from https://stackoverflow.com/questions/19596950/sort-an-arraylist-of-integer-arrays
+        // sort location array for horizontal
+        Collections.sort(locations, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return Integer.compare(o1[0], o2[0]);
+            }
+        });
+        // if all slots are in the same row
+        //[0,0][1,0][2,0][3,0]
+        int hCount = locations.get(0)[0];
+        int yValue = locations.get(0)[1];
+        for(int[] s : locations){
+          if(hCount == s[0] && yValue == s[1]){
+            hCount++;
+            continue;
+          }
+          else{
+            break;
+          }
+        }
+        if(hCount == locations.get(0)[0] + ship.getShotsToSink()){
+          return true;
+        }
+        // if all slots are vertical to each other
+        //[0,0][0,1],[0,2][0,3]
+        Collections.sort(locations, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return Integer.compare(o1[1], o2[1]);
+            }
+        });
+        int vCount = locations.get(0)[1];
+        int xValue = locations.get(0)[0];
+        for(int[] s : locations){
+          if(vCount == s[1] && xValue == s[0]){
+            vCount++;
+            continue;
+          }
+          else{
+            break;
+          }
+        }
+        if(vCount == locations.get(0)[1] + ship.getShotsToSink()){
+          return true;
+      }
+      }
+      return false;
     }
 }

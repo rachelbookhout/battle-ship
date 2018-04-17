@@ -12,6 +12,7 @@ public abstract class Ship{
   enum Status { CREATED, PLACED, HIT, SUNK};
   protected ArrayList<int[]> location =new ArrayList<int[]>();
   protected int hits;
+  protected int numOfShotsToSink;
   protected Status status;
   protected String name;
   protected Color color;
@@ -21,6 +22,7 @@ public abstract class Ship{
     status = Status.CREATED;
     name = "Ship";
     color = Color.GREEN;
+    numOfShotsToSink = 0;
   }
 
   public Status getStatus(){
@@ -34,10 +36,10 @@ public abstract class Ship{
   }
   public void setLocation(int[] newLocation){
     location.add(newLocation);
-    for(int[] l:location){
-      System.out.println("first coord" + l[0]);
-      System.out.println("second coord" + l[1]);
-    }
+    //for(int[] l:location){
+      //System.out.println("first coord" + l[0]);
+      //System.out.println("second coord" + l[1]);
+    //}
   }
   public int getHits(){
     return hits;
@@ -45,4 +47,8 @@ public abstract class Ship{
   public void setHits(int newHit){
     hits = newHit;
   }
+
+   public int getShotsToSink(){
+      return numOfShotsToSink;
+    }
 }
