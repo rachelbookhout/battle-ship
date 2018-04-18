@@ -6,6 +6,8 @@ import java.util.*;
 
 public class PlayerBoard extends Board {
     public Ship tempShip;
+    PlaceShip ps = new PlaceShip();
+
     public PlayerBoard(int dimensions){
         super(dimensions);
         addEvents(dimensions);
@@ -16,13 +18,7 @@ public class PlayerBoard extends Board {
       for (int o = 0; o < dimensions; o++) {
         for (int i = 0; i < dimensions; i++) {
           board[o][i].setVisible(true);
-          board[o][i].addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent ae){
-                if(getStatus() == Status.READY_FOR_PLACEMENT){
-                  addShip((JButton) ae.getSource(), tempShip);
-                }
-              }
-            });
+          board[o][i].addActionListener(ps);
         }
       }
     }
@@ -32,9 +28,6 @@ public class PlayerBoard extends Board {
     }
 
     private void addShip(JButton button, Ship ship){
-      System.out.println("Location Size" + ship.getLocation().size());
-      System.out.println("Ships To Sink size" + ship.getShotsToSink());
-      System.out.println("Adding ship");
       String text = button.getText();
       int index = text.indexOf(',');
       int firstNumber = Integer.parseInt(text.substring(0,index));
@@ -45,7 +38,12 @@ public class PlayerBoard extends Board {
       board[secondNumber][firstNumber].setBackground(ship.color);
       board[secondNumber][firstNumber].setOpaque(true);
       if(checkLocation(ship)){
-        //** NEXT STEP
+        ship.setStatus(Ship.Status.PLACED);
+        System.out.println("Fix");
+        for(int[] s : ship.getLocation()){
+          board[s[0]][s[1]].removeActionListener(ps);
+        }
+
       };
     }
 
@@ -101,5 +99,13 @@ public class PlayerBoard extends Board {
       }
       }
       return false;
+    }
+
+    private class PlaceShip implements ActionListener{
+      public void actionPerformed(ActionEvent ae){
+        if(getStatus() == Status.READY_FOR_PLACEMENT){
+          addShip((JButton) ae.getSource(), tempShip);
+        }
+      }
     }
 }

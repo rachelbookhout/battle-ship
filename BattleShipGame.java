@@ -12,7 +12,6 @@ class BattleShipGame{
   private TrackingBoard playerTrackingBoard;
   private TrackingBoard computerTrackingBoard;
   private EasyPlayer computerPlayer;
-  private GameBoardConnector connector;
 
   private int dimensions = 6;
   JTextArea dialogueBox = new JTextArea();
@@ -42,7 +41,6 @@ class BattleShipGame{
     playerTrackingBoard = new TrackingBoard(dimensions);
     computerBoard = new PlayerBoard(dimensions);
     computerTrackingBoard = new TrackingBoard(dimensions);
-    GameBoardConnector connector = new GameBoardConnector(playerBoard);
     readytoPlayButton.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent ae){
         setUpShips();
@@ -78,9 +76,8 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Carrier carrier = new Carrier();
         playerBoard.connectShipToBoard(carrier);
-        changeDisplayOnButton(false);
+        changeDisplayOnAllButtons(false);
         addShipToBoard(carrier);
-        //changeDisplayOnButton(true);
       }
     });
     cruiserButton.addActionListener(new ActionListener(){
@@ -88,9 +85,9 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Cruiser cruiser = new Cruiser();
         playerBoard.connectShipToBoard(cruiser);
-        changeDisplayOnButton(false);
+        changeDisplayOnAllButtons(false);
         addShipToBoard(cruiser);
-        //changeDisplayOnButton(true);
+        System.out.println(cruiser.getStatus());
       }
     });
     submarineButton.addActionListener(new ActionListener(){
@@ -98,9 +95,8 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Submarine sub = new Submarine();
         playerBoard.connectShipToBoard(sub);
-        changeDisplayOnButton(false);
+        changeDisplayOnAllButtons(false);
         addShipToBoard(sub);
-        //changeDisplayOnButton(true);
       }
     });
     battleShipButton.addActionListener(new ActionListener(){
@@ -108,9 +104,8 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         BattleShip bs = new BattleShip();
         playerBoard.connectShipToBoard(bs);
-        changeDisplayOnButton(false);
+        changeDisplayOnAllButtons(false);
         addShipToBoard(bs);
-        //changeDisplayOnButton(true);
       }
     });
     destroyerButton.addActionListener(new ActionListener(){
@@ -118,9 +113,8 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Destroyer destroyer = new Destroyer();
         playerBoard.connectShipToBoard(destroyer);
-        changeDisplayOnButton(false);
+        changeDisplayOnAllButtons(false);
         addShipToBoard(destroyer);
-        //changeDisplayOnButton(true);
       }
     });
     communicationPanel.add(carrierButton);
@@ -130,7 +124,7 @@ class BattleShipGame{
     communicationPanel.add(destroyerButton);
   }
 
-  private void changeDisplayOnButton(boolean state){
+  private void changeDisplayOnAllButtons(boolean state){
     carrierButton.setVisible(state);
     destroyerButton.setVisible(state);
     battleShipButton.setVisible(state);
@@ -143,8 +137,6 @@ class BattleShipGame{
     playerBoard.setTempShip(ship);
     dialogueBox.setText("Pick your location to place the ship. Remember the ship uses " +
     ship.numOfShotsToSink + "boxes");
-     // take look at location, make sure it's valid
-    // redisplay boxes
   }
 
   private void playGame(){
