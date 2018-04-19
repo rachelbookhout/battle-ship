@@ -24,6 +24,7 @@ public class PlayerBoard extends Board {
     }
 
     public void setTempShip(Ship ship){
+      System.out.println("ship before temp" + ship.toString());
       tempShip = ship;
     }
 
@@ -40,6 +41,7 @@ public class PlayerBoard extends Board {
       if(checkLocation(ship)){
         ship.setStatus(Ship.Status.PLACED);
         System.out.println("Fix");
+        System.out.println(ship.toString());
         for(int[] s : ship.getLocation()){
           board[s[0]][s[1]].removeActionListener(ps);
         }

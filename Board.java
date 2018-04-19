@@ -52,7 +52,6 @@ public abstract class Board extends JPanel{
   }
 
   public void connectShipToBoard(Ship ship){
-    System.out.println(ships.size());
     ships.add(ship);
   }
 

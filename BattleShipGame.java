@@ -17,11 +17,13 @@ class BattleShipGame{
   JTextArea dialogueBox = new JTextArea();
   JButton readytoPlayButton = new JButton("Play!");
   JPanel communicationPanel = new JPanel();
-      JButton carrierButton = new JButton("Carrier");
-    JButton cruiserButton = new JButton("Cruiser");
-    JButton submarineButton = new JButton("Submarine");
-    JButton battleShipButton = new JButton("BattleShip");
-    JButton destroyerButton = new JButton("Destroyer");
+  JButton carrierButton = new JButton("Carrier");
+  JButton cruiserButton = new JButton("Cruiser");
+  JButton submarineButton = new JButton("Submarine");
+  JButton battleShipButton = new JButton("BattleShip");
+  JButton destroyerButton = new JButton("Destroyer");
+  JButton doneButton = new JButton("Done");
+  JButton finalizeBoardButton = new JButton("GO!!!");
 
   public static void main(String [] args) {
     BattleShipGame game = new BattleShipGame();
@@ -47,7 +49,6 @@ class BattleShipGame{
       }
     });
     dialogueBox.setSize(245, 100);
-    //dialogueBox.setLayout(new BoxLayout(dialogueBox, BoxLayout.X_AXIS));
     dialogueBox.setFont(new Font("Serif", Font.BOLD, 20));
     dialogueBox.setText("Ready to Play?");
     dialogueBox.setEditable(false);
@@ -68,16 +69,26 @@ class BattleShipGame{
     readytoPlayButton.setVisible(false);
     dialogueBox.setText("Click a button to choose the ship you want to place");
     createShipButtons();
+    communicationPanel.add(carrierButton);
   }
 
   private void createShipButtons(){
+
     carrierButton.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent ae){
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Carrier carrier = new Carrier();
         playerBoard.connectShipToBoard(carrier);
-        changeDisplayOnAllButtons(false);
         addShipToBoard(carrier);
+        carrierButton.setVisible(false);
+        communicationPanel.remove(carrierButton);
+        doneButton.addActionListener(new FinalizeShipListener(carrier,cruiserButton,communicationPanel, doneButton));
+        doneButton.setVisible(true);
+        communicationPanel.add(doneButton);
+        //if(carrier.getStatus() == Ship.Status.PLACED){
+          //  communicationPanel.add(cruiserButton);
+            //cruiserButton.setVisible(true);
+        //}
       }
     });
     cruiserButton.addActionListener(new ActionListener(){
@@ -85,9 +96,17 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Cruiser cruiser = new Cruiser();
         playerBoard.connectShipToBoard(cruiser);
-        changeDisplayOnAllButtons(false);
         addShipToBoard(cruiser);
-        System.out.println(cruiser.getStatus());
+        cruiserButton.setVisible(false);
+        communicationPanel.remove(cruiserButton);
+        doneButton.addActionListener(new FinalizeShipListener(cruiser,submarineButton,communicationPanel, doneButton));
+        doneButton.setVisible(true);
+        communicationPanel.add(doneButton);
+        //if(cruiser.getStatus() == Ship.Status.PLACED){
+          //cruiserButton.setVisible(false);
+          //communicationPanel.add(submarineButton);
+          //submarineButton.setVisible(true);
+        //}
       }
     });
     submarineButton.addActionListener(new ActionListener(){
@@ -95,8 +114,11 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Submarine sub = new Submarine();
         playerBoard.connectShipToBoard(sub);
-        changeDisplayOnAllButtons(false);
         addShipToBoard(sub);
+        submarineButton.setVisible(false);
+        doneButton.addActionListener(new FinalizeShipListener(sub,battleShipButton,communicationPanel, doneButton));
+        doneButton.setVisible(true);
+        communicationPanel.add(doneButton);
       }
     });
     battleShipButton.addActionListener(new ActionListener(){
@@ -104,8 +126,11 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         BattleShip bs = new BattleShip();
         playerBoard.connectShipToBoard(bs);
-        changeDisplayOnAllButtons(false);
         addShipToBoard(bs);
+        battleShipButton.setVisible(false);
+        doneButton.addActionListener(new FinalizeShipListener(bs,destroyerButton,communicationPanel, doneButton));
+        doneButton.setVisible(true);
+        communicationPanel.add(doneButton);
       }
     });
     destroyerButton.addActionListener(new ActionListener(){
@@ -113,15 +138,18 @@ class BattleShipGame{
         playerBoard.setStatus(Board.Status.READY_FOR_PLACEMENT);
         Destroyer destroyer = new Destroyer();
         playerBoard.connectShipToBoard(destroyer);
-        changeDisplayOnAllButtons(false);
         addShipToBoard(destroyer);
+        destroyerButton.setVisible(false);
+        doneButton.addActionListener(new FinalizeShipListener(destroyer,finalizeBoardButton,communicationPanel, doneButton));
+        doneButton.setVisible(true);
+        communicationPanel.add(doneButton);
       }
     });
-    communicationPanel.add(carrierButton);
-    communicationPanel.add(cruiserButton);
-    communicationPanel.add(submarineButton);
-    communicationPanel.add(battleShipButton);
-    communicationPanel.add(destroyerButton);
+    //communicationPanel.add(carrierButton);
+    //communicationPanel.add(cruiserButton);
+    //communicationPanel.add(submarineButton);
+    //communicationPanel.add(battleShipButton);
+    //communicationPanel.add(destroyerButton);
   }
 
   private void changeDisplayOnAllButtons(boolean state){
@@ -133,16 +161,41 @@ class BattleShipGame{
   }
 
   private void addShipToBoard(Ship ship){
-    // write text prompt out
     playerBoard.setTempShip(ship);
     dialogueBox.setText("Pick your location to place the ship. Remember the ship uses " +
-    ship.numOfShotsToSink + "boxes");
+    ship.numOfShotsToSink + " boxes. Click done when you are finished");
   }
 
   private void playGame(){
 
   }
 
+  private class FinalizeShipListener implements ActionListener {
+    private Ship ship;
+    private JButton current;
+    private JButton next;
+    private JPanel panel;
+    private JButton doneButton;
+
+
+    public FinalizeShipListener(Ship ship, JButton next, JPanel panel, JButton doneButton) {
+        this.ship = ship;
+        this.next = next;
+        this.panel = panel;
+        this.doneButton = doneButton;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("next button is" + next.getText());
+      if(ship.getStatus() == Ship.Status.PLACED){
+          panel.add(next);
+          next.setVisible(true);
+          doneButton.setVisible(false);
+          panel.remove(doneButton);
+          dialogueBox.setText("Pick your next ship");
+      }
+    }
+}
   // private class LinkShipToBoard implements ActionListener{
 
   // public void actionPerformed(ActionEvent ae) {
