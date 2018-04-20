@@ -28,4 +28,8 @@ public class Submarine extends Ship {
       }
       return false;
     }
+
+    public Color getColor(){
+    return color;
+  }
 }

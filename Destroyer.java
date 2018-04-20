@@ -27,4 +27,8 @@ public class Destroyer extends Ship {
       }
       return false;
     }
+
+    public Color getColor(){
+    return color;
+  }
 }

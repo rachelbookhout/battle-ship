@@ -48,7 +48,11 @@ public abstract class Ship{
     hits = newHit;
   }
 
-   public int getShotsToSink(){
+  public int getShotsToSink(){
       return numOfShotsToSink;
-    }
+  }
+
+  public Color getColor(){
+    return color;
+  }
 }

@@ -24,10 +24,11 @@ public class PlayerBoard extends Board {
     }
 
     public void setTempShip(Ship ship){
-      System.out.println("ship before temp" + ship.toString());
       tempShip = ship;
     }
 
+    // this needs to be more hard -> can't survive if you go over the
+    // num of tiles entered, can click when the done button isn't up
     private void addShip(JButton button, Ship ship){
       String text = button.getText();
       int index = text.indexOf(',');
@@ -36,14 +37,14 @@ public class PlayerBoard extends Board {
       int[] location = {firstNumber, secondNumber};
       ship.setLocation(location);
       JButton[][] board = getBoard();
-      board[secondNumber][firstNumber].setBackground(ship.color);
+      board[secondNumber][firstNumber].setForeground(ship.getColor());
+      board[secondNumber][firstNumber].setBackground(ship.getColor());
       board[secondNumber][firstNumber].setOpaque(true);
       if(checkLocation(ship)){
         ship.setStatus(Ship.Status.PLACED);
-        System.out.println("Fix");
-        System.out.println(ship.toString());
         for(int[] s : ship.getLocation()){
-          board[s[0]][s[1]].removeActionListener(ps);
+          board[s[1]][s[0]].removeActionListener(ps);
+          board[s[1]][s[0]].setText("S");
         }
 
       };
@@ -51,7 +52,6 @@ public class PlayerBoard extends Board {
 
     private boolean checkLocation(Ship ship){
       if (ship.getLocation().size() >= ship.getShotsToSink()){
-        System.out.println("Checking location");
         ArrayList<int[]> locations = ship.getLocation();
         // borrowed from https://stackoverflow.com/questions/19596950/sort-an-arraylist-of-integer-arrays
         // sort location array for horizontal

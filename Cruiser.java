@@ -23,4 +23,8 @@ public class Cruiser extends Ship {
       }
       return false;
     }
+
+    public Color getColor(){
+    return color;
+  }
 }
