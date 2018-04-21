@@ -190,7 +190,9 @@ class BattleShipGame{
     // when this button is clicked, it becomes HumanPlayer turn
     // add action handler
     playerTrackingBoard.setPlayerBoard(computerBoard);
+    playerTrackingBoard.setOpponentBoard(playerBoard);
     playerTrackingBoard.addEvents(dimensions);
+    playerTrackingBoard.getDialogueBoxForGame(dialogueBox);
      // allow user to click their tracking board
      // display results of the clicking
      // switch turn and remove the event handlers

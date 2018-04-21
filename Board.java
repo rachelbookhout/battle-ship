@@ -11,12 +11,22 @@ public abstract class Board extends JPanel{
   public JButton[][] jbtnBoard = new JButton[dimensions][dimensions];
   protected ArrayList<Ship> ships = new ArrayList<Ship>(5);
   protected Status status;
+  protected int hitsLeft;
 
   public Board(int dimensions){
     this.dimensions = dimensions;
     createBoard(dimensions);
     this.status = Status.CREATED;
     //connectShipsToBoard();
+    this.hitsLeft = 15;
+  }
+
+  public int getHitsLeft(){
+    return hitsLeft;
+  }
+
+  public void setHitsLeft(int hits){
+    hitsLeft = hits;
   }
 
   private JButton[][] createBoard(int size){
