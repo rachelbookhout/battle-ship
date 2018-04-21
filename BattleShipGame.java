@@ -24,7 +24,7 @@ class BattleShipGame{
   JButton destroyerButton = new JButton("Destroyer");
   JButton doneButton = new JButton("Done");
   JButton finalizeBoardButton = new JButton("GO!!!");
-
+  JButton startGameButton = new JButton("Start Game");
   public static void main(String [] args) {
     BattleShipGame game = new BattleShipGame();
   }
@@ -154,11 +154,12 @@ class BattleShipGame{
           playerBoard.removeEvents();
           // create computer board with random placements
           computerBoard.setShipPlacements();
-          System.out.println("created computerBoard");
-          playerTrackingBoard.createTrackingBoard(computerBoard);
-          System.out.println("created player's tracking board");
-          computerTrackingBoard.createTrackingBoard(playerBoard);
-          // create both tracking boards
+          //playerTrackingBoard.createTrackingBoard(computerBoard);
+          //computerTrackingBoard.createTrackingBoard(playerBoard);
+          finalizeBoardButton.setVisible(false);
+          System.out.println("setting start Game Button visible");
+          dialogueBox.setText("Player 1 - Bombs Away!");
+          playGame();
         }
       });
     //communicationPanel.add(carrierButton);
@@ -183,7 +184,19 @@ class BattleShipGame{
   }
 
   private void playGame(){
-
+    EasyPlayer computerPlayer = new EasyPlayer();
+    HumanPlayer humanPlayer = new HumanPlayer();
+    // display button start game
+    // when this button is clicked, it becomes HumanPlayer turn
+    // add action handler
+    playerTrackingBoard.setPlayerBoard(computerBoard);
+    playerTrackingBoard.addEvents(dimensions);
+     // allow user to click their tracking board
+     // display results of the clicking
+     // switch turn and remove the event handlers
+    // if computer has the turn, player picks a hit
+    // display results
+    // switch turn, reenable action handlers
   }
 
   // keep getting cruiser
@@ -220,6 +233,23 @@ class BattleShipGame{
       }
     }
 }
+
+  // private class BombAway implements ActionListener {
+  //   private TrackingBoard board;
+  //   public BombAway(TrackingBoard board) {
+  //     board = board;
+  //   }
+
+  //   public void actionPerformed(ActionEvent ae) {
+  //     System.out.println("within Bomb Away");
+  //     System.out.println("Bombs Away!");
+  //     board.decideShipFate((JButton) ae.getSource());
+  //     // check if we won
+  //     // switch turn to computer
+  //     // computer makes turn
+  //     // check if they won
+  //   }
+  // }
   // private class LinkShipToBoard implements ActionListener{
 
   // public void actionPerformed(ActionEvent ae) {

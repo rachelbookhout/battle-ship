@@ -1,9 +1,10 @@
-public class EasyPlayer implements Player {
+public class HumanPlayer implements Player {
   private boolean turn;
 
-  public EasyPlayer(){
-    turn = false;
+  public HumanPlayer(){
+    turn = true;
   }
+
    public void makeMove() {
 
    }
