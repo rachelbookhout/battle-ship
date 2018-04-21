@@ -26,4 +26,5 @@ public class Carrier extends Ship {
   public Color getColor(){
     return color;
   }
+
 }

@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public class Cruiser extends Ship {
     protected String name;
-    protected int num = 3;
+    protected int num = 1;
     protected Color color;
 
     public Cruiser(){

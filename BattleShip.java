@@ -28,7 +28,8 @@ public class BattleShip extends Ship {
       return false;
     }
 
-    public Color getColor(){
+  public Color getColor(){
     return color;
   }
+
 }

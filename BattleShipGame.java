@@ -148,6 +148,19 @@ class BattleShipGame{
         communicationPanel.add(doneButton);
       }
     });
+    finalizeBoardButton.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent ae){
+          // remove all action listeners from player board
+          playerBoard.removeEvents();
+          // create computer board with random placements
+          computerBoard.setShipPlacements();
+          System.out.println("created computerBoard");
+          playerTrackingBoard.createTrackingBoard(computerBoard);
+          System.out.println("created player's tracking board");
+          computerTrackingBoard.createTrackingBoard(playerBoard);
+          // create both tracking boards
+        }
+      });
     //communicationPanel.add(carrierButton);
     //communicationPanel.add(cruiserButton);
     //communicationPanel.add(submarineButton);

@@ -23,8 +23,38 @@ public class PlayerBoard extends Board {
       }
     }
 
+    public void removeEvents(){
+      JButton[][] board = getBoard();
+      for (int o = 0; o < dimensions; o++) {
+        for (int i = 0; i < dimensions; i++) {
+          board[o][i].removeActionListener(ps);
+          board[o][i].setEnabled(false);
+        }
+      }
+    }
+
     public void setTempShip(Ship ship){
       tempShip = ship;
+    }
+
+    public void setShipPlacements(){
+      // create ships with locations
+      Cruiser cruiser = new Cruiser();
+      BattleShip battleShip = new BattleShip();
+      Carrier carrier = new Carrier();
+      Destroyer destroyer = new Destroyer();
+      Submarine submarine = new Submarine();
+      cruiser.setRandomLocation(this);
+      carrier.setRandomLocation(this);
+      destroyer.setRandomLocation(this);
+      submarine.setRandomLocation(this);
+      battleShip.setRandomLocation(this);
+      connectShipToBoard(cruiser);
+      connectShipToBoard(carrier);
+      connectShipToBoard(destroyer);
+      connectShipToBoard(submarine);
+      connectShipToBoard(battleShip);
+      // add them to the board
     }
 
     // this needs to be more hard -> can't survive if you go over the
@@ -40,6 +70,7 @@ public class PlayerBoard extends Board {
       board[secondNumber][firstNumber].setForeground(ship.getColor());
       board[secondNumber][firstNumber].setBackground(ship.getColor());
       board[secondNumber][firstNumber].setOpaque(true);
+      board[secondNumber][firstNumber].setEnabled(false);
       if(checkLocation(ship)){
         ship.setStatus(Ship.Status.PLACED);
         for(int[] s : ship.getLocation()){
