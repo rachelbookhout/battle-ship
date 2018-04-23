@@ -34,7 +34,7 @@ public class TrackingBoard extends Board {
         for (int i = 0; i < dimensions; i++) {
           board[o][i].setVisible(true);
           // needs to be removed, can't find the 2nd call
-          board[o][i].removeActionListener(bombShip);
+          //board[o][i].removeActionListener(bombShip);
           board[o][i].addActionListener(bombShip);
         }
       }
