@@ -4,7 +4,6 @@
  * @author Rachel Bookhout
 */
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

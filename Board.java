@@ -14,7 +14,7 @@ public abstract class Board extends JPanel{
 
   enum Status { CREATED, READY_FOR_PLACEMENT,PLACED};
 
-  protected int dimensions;
+  protected int dimensions = 10;
   public JButton[][] jbtnBoard = new JButton[dimensions][dimensions];
   protected ArrayList<Ship> ships = new ArrayList<Ship>(5);
   protected Status status;
@@ -22,7 +22,7 @@ public abstract class Board extends JPanel{
 
   /**
    * This constructor creates our board and intalizies all of its properties it has by default
-   * @param dimensions - integer which is how big our board will be (it is set up to be 6x6)
+   * @param dimensions - integer which is how big our board will be
   */
   public Board(int dimensions){
     this.dimensions = dimensions;
