@@ -12,10 +12,10 @@ public class BattleShip extends Ship {
   protected String name;
   protected Color color;
 
-    /**
-     * This constructor has BattleShip inherit everything from the Ship class
-     * but sets the name, color, and numOfShotsToSink since those are different
-    */
+  /**
+   * This constructor has BattleShip inherit everything from the Ship class
+   * but sets the name, color, and numOfShotsToSink since those are different
+  */
   public BattleShip(){
     super();
     numOfShotsToSink = shots;
