@@ -203,6 +203,10 @@ class BattleShipGame{
     playerTrackingBoard.setOpponentBoard(playerBoard);
     playerTrackingBoard.addEvents(dimensions);
     playerTrackingBoard.getDialogueBoxForGame(dialogueBox);
+    ShipCounter againstPlayer = new ShipCounter(playerBoard.getShipsOnBoard());
+    ShipCounter forPlayer = new ShipCounter(computerBoard.getShipsOnBoard());
+    communicationPanel.add(againstPlayer.getDisplay());
+    communicationPanel.add(forPlayer.getDisplay());
   }
 
   /**
@@ -236,8 +240,8 @@ class BattleShipGame{
       if(ship.getStatus() == Ship.Status.PLACED){
           doneButton.setVisible(false);
           panel.remove(doneButton);
-          next.setVisible(true);
-          panel.add(next);
+          nextButton.setVisible(true);
+          panel.add(nextButton);
           doneButton.removeActionListener(this);
           if(playerBoard.getShipsOnBoard().size() != 5){
             dialogueBox.setText("Pick your next ship");
