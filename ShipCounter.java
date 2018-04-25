@@ -18,12 +18,13 @@ public class ShipCounter extends JPanel{
   }
 
   private void createDisplay(ArrayList<Ship> ships){
-    //this.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+    this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     for(Ship ship: ships){
       JPanel panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+      // need to grab the ship name, not generic
       JLabel name = new JLabel(ship.name);
-      String hits = ship.hits + "hits out of " + ship.numOfShotsToSink;
-      // display Ship name , hits and numOfShotsToSink
+      String hits = ":  " + ship.hits + " hits out of " + ship.numOfShotsToSink;
       JLabel info = new JLabel(hits);
       panel.add(name);
       panel.add(info);
@@ -36,6 +37,7 @@ public class ShipCounter extends JPanel{
     return this;
   }
 
+  // as hits are made, need to update the board
   public JPanel updateDisplay(ArrayList<Ship> ships){
      createDisplay(ships);
      return getDisplay();

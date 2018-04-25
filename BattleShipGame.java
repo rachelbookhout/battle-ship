@@ -176,7 +176,7 @@ class BattleShipGame{
           computerBoard.setShipPlacements();
           // make our button not visible
           finalizeBoardButton.setVisible(false);
-          dialogueBox.setText("Player 1 - Bombs Away!");
+          communicationPanel.remove(dialogueBox);
           // start the game
           playGame();
         }
@@ -206,6 +206,8 @@ class BattleShipGame{
     ShipCounter againstPlayer = new ShipCounter(playerBoard.getShipsOnBoard());
     ShipCounter forPlayer = new ShipCounter(computerBoard.getShipsOnBoard());
     communicationPanel.add(againstPlayer.getDisplay());
+    communicationPanel.add(dialogueBox);
+    dialogueBox.setText("Player 1 - Bombs Away!");
     communicationPanel.add(forPlayer.getDisplay());
   }
 
