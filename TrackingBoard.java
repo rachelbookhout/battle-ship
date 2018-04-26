@@ -21,6 +21,8 @@ public class TrackingBoard extends Board {
   BombShip bombShip = new BombShip();
   // this is to connect us to the BattleShipGame class in terms of displaying dialogue
   JTextArea dialogueBox;
+  ShipCounter forPlayer;
+  ShipCounter againstPlayer;
 
   /**
    * This constructor is to create our board and takes everything from the Board class
@@ -73,6 +75,22 @@ public class TrackingBoard extends Board {
   }
 
   /**
+   * This method saves the ShipCounter to a variable within this class so we can update it
+   * @param counter, ShipCounter of the human player
+  */
+  public void setPlayerShipCounter(ShipCounter counter){
+    forPlayer = counter;
+  }
+
+  /**
+   * This method saves the ShipCounter to a variable within this class so we can update it
+   * @param counter, ShipCounter of the computer player
+  */
+  public void setOpponentShipCounter(ShipCounter counter){
+    againstPlayer = counter;
+  }
+
+  /**
    * This method decides the display of the board when a user clicks on a particular square
    * it checks if a ship was hit or not
    * @param button - JButton, the button the player pressed to bomb
@@ -91,15 +109,18 @@ public class TrackingBoard extends Board {
     // grab our board so we can change the display of location
     JButton[][] board = getBoard();
     // if there is a ship, make that box say "H", color it based on which ship it is
-    // and remove the action listener
+    // update ship counter, and remove the action listener
     if(!isShipInLocation.isEmpty()){
       board[secondNumber][firstNumber].setFont(new Font("Arial", Font.BOLD, 20));
       board[secondNumber][firstNumber].setForeground(Color.BLACK);
       board[secondNumber][firstNumber].setText("H");
       playerBoard.setHitsLeft(playerBoard.getHitsLeft() - 1);
+      Ship ship = isShipInLocation.get(true);
+      ship.setHits(ship.getHits() +1 );
       board[secondNumber][firstNumber].setForeground(isShipInLocation.get(true).getColor());
       board[secondNumber][firstNumber].setBackground(isShipInLocation.get(true).getColor());
       board[secondNumber][firstNumber].setOpaque(true);
+      forPlayer.updateDisplay(playerBoard.getShipsOnBoard());
       board[secondNumber][firstNumber].removeActionListener(bombShip);
     }
     // if there wasn't a ship, make that box with an x
@@ -150,6 +171,10 @@ public class TrackingBoard extends Board {
       board[yCoor][xCoor].setFont(new Font("Arial", Font.BOLD, 20));
       board[yCoor][xCoor].setText("H");
       opposingBoard.setHitsLeft(opposingBoard.getHitsLeft() - 1);
+      Ship ship = isShip.get(true);
+      ship.setHits(ship.getHits() +1 );
+      againstPlayer.updateDisplay(opposingBoard.getShipsOnBoard());
+
     }
     else{
       board[yCoor][xCoor].setFont(new Font("Arial", Font.BOLD, 20));

@@ -29,7 +29,6 @@ public class PlayerBoard extends Board {
    * @param dimensions, integer of how big our board is
   */
   private void addEvents(int dimensions){
-    System.out.println("events getting added");
     JButton[][] board = getBoard();
     for (int o = 0; o < dimensions; o++) {
       for (int i = 0; i < dimensions; i++) {
@@ -43,7 +42,6 @@ public class PlayerBoard extends Board {
    * This removes the action lisener PlaceShip from the JButtons
   */
   public void removeEvents(){
-    System.out.println("events being removed");
     JButton[][] board = getBoard();
     for (int o = 0; o < dimensions; o++) {
       for (int i = 0; i < dimensions; i++) {
@@ -92,7 +90,6 @@ public class PlayerBoard extends Board {
   */
   private void addShip(JButton button, Ship ship){
     // figure out which button we clicked and set it as our coordinates
-    System.out.println("Ship getting added");
     String text = button.getText();
     int index = text.indexOf(',');
     int firstNumber = Integer.parseInt(text.substring(0,index));

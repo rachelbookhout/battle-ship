@@ -87,6 +87,14 @@ public abstract class Ship{
   }
 
   /**
+   * This method is to return the name of the ship
+   * @return name, String, name of ship
+  */
+  public String getName(){
+    return name;
+  }
+
+  /**
    * This method is get the Color associated with a BattleShip
    * @return color - Color set within the constructor for a BattleShip
   */

@@ -205,6 +205,8 @@ class BattleShipGame{
     playerTrackingBoard.getDialogueBoxForGame(dialogueBox);
     ShipCounter againstPlayer = new ShipCounter(playerBoard.getShipsOnBoard());
     ShipCounter forPlayer = new ShipCounter(computerBoard.getShipsOnBoard());
+    playerTrackingBoard.setOpponentShipCounter(againstPlayer);
+    playerTrackingBoard.setPlayerShipCounter(forPlayer);
     communicationPanel.add(againstPlayer.getDisplay());
     communicationPanel.add(dialogueBox);
     dialogueBox.setText("Player 1 - Bombs Away!");
