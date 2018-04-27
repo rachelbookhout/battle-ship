@@ -62,6 +62,13 @@ public abstract class Ship{
     location.add(newLocation);
   }
 
+   /**
+   * This removes all location coordinates from the location array
+  */
+  public void removeLocations(){
+    location.clear();
+  }
+
   /**
    * This methods get the hits done to a ship
    * @return hits, integer

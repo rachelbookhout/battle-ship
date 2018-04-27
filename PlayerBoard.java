@@ -28,7 +28,8 @@ public class PlayerBoard extends Board {
    * This adds our PlaceShip action listener to each JButton
    * @param dimensions, integer of how big our board is
   */
-  private void addEvents(int dimensions){
+  public void addEvents(int dimensions){
+    System.out.println("Add Event");
     JButton[][] board = getBoard();
     for (int o = 0; o < dimensions; o++) {
       for (int i = 0; i < dimensions; i++) {
@@ -46,7 +47,6 @@ public class PlayerBoard extends Board {
     for (int o = 0; o < dimensions; o++) {
       for (int i = 0; i < dimensions; i++) {
         board[o][i].removeActionListener(ps);
-        board[o][i].setEnabled(false);
       }
     }
   }
@@ -108,10 +108,25 @@ public class PlayerBoard extends Board {
       ship.setStatus(Ship.Status.PLACED);
       // mark "S" for ship on the square and remove it from being able to be clicked
       for(int[] s : ship.getLocation()){
-        board[s[1]][s[0]].removeActionListener(ps);
+        board[s[1]][s[0]].setForeground(ship.getColor());
         board[s[1]][s[0]].setText("S");
       }
+        removeEvents();
     };
+  }
+
+    /**
+   * This remove all locations for the Ship and changes the display so it can be chosen again
+  */
+  public void removeShips(){
+    JButton[][] board = getBoard();
+    for(int[] s : tempShip.getLocation()){
+      board[s[1]][s[0]].setForeground(Color.GREEN);
+      board[s[1]][s[0]].setBackground(Color.WHITE);
+      board[s[1]][s[0]].setOpaque(false);
+      board[s[1]][s[0]].setEnabled(true);
+    }
+    tempShip.removeLocations();
   }
 
   /**
@@ -120,6 +135,7 @@ public class PlayerBoard extends Board {
    * @param ship, Ship -> the ship we are trying to place
   */
   private boolean checkLocation(Ship ship){
+    System.out.println("size:" + ship.getLocation().size());
     if (ship.getLocation().size() >= ship.getShotsToSink()){
       ArrayList<int[]> locations = ship.getLocation();
       // borrowed from https://stackoverflow.com/questions/19596950/sort-an-arraylist-of-integer-arrays

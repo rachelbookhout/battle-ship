@@ -30,7 +30,6 @@ public class TrackingBoard extends Board {
   */
   public TrackingBoard(int dimensions){
     super(dimensions);
-    addEvents(dimensions);
   }
 
   /**
@@ -54,6 +53,7 @@ public class TrackingBoard extends Board {
    * @param board, PlayerBoard of the player playing
   */
   public void setOpponentBoard(PlayerBoard board){
+    board.addEvents(dimensions);
     opposingBoard = board;
   }
 

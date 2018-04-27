@@ -24,6 +24,7 @@ class BattleShipGame{
   // intializing our buttons here so all methods have access to them
   JTextArea dialogueBox = new JTextArea();
   JButton readytoPlayButton = new JButton("Play!");
+  JButton clearButton = new JButton("Clear");
   JPanel communicationPanel = new JPanel();
   JButton carrierButton = new JButton("Carrier");
   JButton cruiserButton = new JButton("Cruiser");
@@ -66,7 +67,7 @@ class BattleShipGame{
       }
     });
     dialogueBox.setSize(245, 100);
-    dialogueBox.setFont(new Font("Serif", Font.BOLD, 20));
+    dialogueBox.setFont(new Font("Serif", Font.BOLD, 18));
     dialogueBox.setText("Ready to Play?");
     dialogueBox.setEditable(false);
     communicationPanel.add(dialogueBox);
@@ -87,6 +88,7 @@ class BattleShipGame{
     dialogueBox.setText("Click a button to choose the ship you want to place");
     createShipButtons();
     communicationPanel.add(carrierButton);
+    communicationPanel.add(clearButton);
   }
 
   /**
@@ -110,6 +112,7 @@ class BattleShipGame{
         communicationPanel.remove(carrierButton);
         // add the done button which will transition us to the next round of adding a ship
         doneButton.addActionListener(new FinalizeShipListener(carrier,cruiserButton,communicationPanel, doneButton));
+        clearButton.setVisible(true);
         doneButton.setVisible(true);
         communicationPanel.add(doneButton);
       }
@@ -123,7 +126,9 @@ class BattleShipGame{
         cruiserButton.setVisible(false);
         communicationPanel.remove(cruiserButton);
         doneButton.addActionListener(new FinalizeShipListener(cruiser,submarineButton,communicationPanel, doneButton));
+        clearButton.setVisible(true);
         doneButton.setVisible(true);
+        playerBoard.addEvents(dimensions);
         communicationPanel.add(doneButton);
       }
     });
@@ -136,6 +141,8 @@ class BattleShipGame{
         submarineButton.setVisible(false);
         communicationPanel.remove(submarineButton);
         doneButton.addActionListener(new FinalizeShipListener(sub,battleShipButton,communicationPanel, doneButton));
+        clearButton.setVisible(true);
+        playerBoard.addEvents(dimensions);
         doneButton.setVisible(true);
         communicationPanel.add(doneButton);
       }
@@ -148,7 +155,9 @@ class BattleShipGame{
         addShipToBoard(bs);
         battleShipButton.setVisible(false);
         communicationPanel.remove(battleShipButton);
+        playerBoard.addEvents(dimensions);
         doneButton.addActionListener(new FinalizeShipListener(bs, destroyerButton,communicationPanel, doneButton));
+        clearButton.setVisible(true);
         doneButton.setVisible(true);
         communicationPanel.add(doneButton);
       }
@@ -164,6 +173,8 @@ class BattleShipGame{
         // the done button will transition us to a finalize button instead of another ship
         // since this is the last ship to be placed
         doneButton.addActionListener(new FinalizeShipListener(destroyer,finalizeBoardButton,communicationPanel, doneButton));
+        playerBoard.addEvents(dimensions);
+        clearButton.setVisible(true);
         doneButton.setVisible(true);
         communicationPanel.add(doneButton);
       }
@@ -181,6 +192,7 @@ class BattleShipGame{
           playGame();
         }
       });
+      clearButton.addActionListener(new RemoveShipLocation());
   }
 
   /**
@@ -241,8 +253,11 @@ class BattleShipGame{
      * This method changes up the display
     */
     public void actionPerformed(ActionEvent e) {
+      System.out.println("Done button hit");
+      System.out.println(ship.getStatus());
       if(ship.getStatus() == Ship.Status.PLACED){
           doneButton.setVisible(false);
+          clearButton.setVisible(false);
           panel.remove(doneButton);
           nextButton.setVisible(true);
           panel.add(nextButton);
@@ -254,6 +269,19 @@ class BattleShipGame{
             dialogueBox.setText(" ");
           }
       }
+    }
+  }
+
+    /**
+   * This class is the action listener that exists on the remove button
+   * it will clear the location array of whatever ship we are working with at the time
+  */
+  private class RemoveShipLocation implements ActionListener {
+    /**
+     * This removes the ship
+    */
+    public void actionPerformed(ActionEvent e) {
+      playerBoard.removeShips();
     }
   }
 }
