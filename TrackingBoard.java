@@ -23,6 +23,8 @@ public class TrackingBoard extends Board {
   JTextArea dialogueBox;
   ShipCounter forPlayer;
   ShipCounter againstPlayer;
+  ArrayList<Integer> usedMoves = new ArrayList<Integer>();
+
 
   /**
    * This constructor is to create our board and takes everything from the Board class
@@ -162,8 +164,16 @@ public class TrackingBoard extends Board {
   */
   private void makeComputerMove(){
     Random rand = new Random();
-    int xCoor = rand.nextInt(5);
-    int yCoor = rand.nextInt(5);
+    int xCoor;
+    int yCoor;
+    int value;
+    int count = 0;
+    do {
+      xCoor = rand.nextInt(6);
+      yCoor = rand.nextInt(6);
+      count += 1;
+      value = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
+    } while (checkUsedMoves(usedMoves,value) && count < 20);
     int[] location = new int[]{xCoor,yCoor};
     HashMap<Boolean, Ship> isShip = checkShipLocation(location,opposingBoard);
     JButton[][] board = opposingBoard.getBoard();
@@ -174,13 +184,25 @@ public class TrackingBoard extends Board {
       Ship ship = isShip.get(true);
       ship.setHits(ship.getHits() +1 );
       againstPlayer.updateDisplay(opposingBoard.getShipsOnBoard());
+      usedMoves.add(value);
 
     }
     else{
       board[yCoor][xCoor].setFont(new Font("Arial", Font.BOLD, 20));
       board[yCoor][xCoor].setText("X");
+      usedMoves.add(value);
     }
   }
+
+  public boolean checkUsedMoves(ArrayList<Integer> used, int num){
+      System.out.println("Size of used:" + used.size() + "and our num is" + num);
+      for (int o = 0; o < used.size() - 1; o++) {
+        if(used.get(o) == num){
+          return true;
+        }
+      }
+      return false;
+    }
 
   /**
    * This method checks to see if a user is won and allows the game to end
@@ -216,7 +238,7 @@ public class TrackingBoard extends Board {
           dialogueBox.setText("Bombs Away, Player 1!");
         }
         else{
-          dialogueBox.setText("You lost!. Game over.");
+          dialogueBox.setText("You lost! Game over.");
         }
       }
       else{
