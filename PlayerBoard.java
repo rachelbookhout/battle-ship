@@ -29,7 +29,6 @@ public class PlayerBoard extends Board {
    * @param dimensions, integer of how big our board is
   */
   public void addEvents(int dimensions){
-    System.out.println("Add Event");
     JButton[][] board = getBoard();
     for (int o = 0; o < dimensions; o++) {
       for (int i = 0; i < dimensions; i++) {
@@ -135,7 +134,6 @@ public class PlayerBoard extends Board {
    * @param ship, Ship -> the ship we are trying to place
   */
   private boolean checkLocation(Ship ship){
-    System.out.println("size:" + ship.getLocation().size());
     if (ship.getLocation().size() >= ship.getShotsToSink()){
       ArrayList<int[]> locations = ship.getLocation();
       // borrowed from https://stackoverflow.com/questions/19596950/sort-an-arraylist-of-integer-arrays

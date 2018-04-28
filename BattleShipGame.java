@@ -253,8 +253,6 @@ class BattleShipGame{
      * This method changes up the display
     */
     public void actionPerformed(ActionEvent e) {
-      System.out.println("Done button hit");
-      System.out.println(ship.getStatus());
       if(ship.getStatus() == Ship.Status.PLACED){
           doneButton.setVisible(false);
           clearButton.setVisible(false);
