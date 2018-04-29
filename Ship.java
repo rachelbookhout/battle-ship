@@ -115,25 +115,38 @@ public abstract class Ship{
    * @param board, will be a PlayerBoard where we are placing the ships
   */
   public void setRandomLocation(Board board){
-    // get random direction
+  // get the values that are setting our boundries on what numbers
+  // we can use for coordinates
     int lowerBound = 0;
     int higherBound = 5;
     int num = getShotsToSink();
-    ArrayList<Integer> used = new ArrayList<Integer>();
+  // create an arrayList to keep track of the values we have used
+    ArrayList<Integer> usedNum = new ArrayList<Integer>();
     Random rand = new Random();
-    int xCoor = rand.nextInt(5);
-    int yCoor = rand.nextInt(5);
-    System.out.println("This is our coord" + xCoor + "," + yCoor);
-    // if x is lower than numOfShots to sink, add ships horizontally, checking against used array
-    // then add to used array
-    if(!checkRightHorizontal(xCoor, yCoor, num, higherBound, used)){
-      System.out.println("Right failed. on to down");
-      boolean downVertical = checkDownVertical(xCoor, yCoor, num, higherBound, used);
-      System.out.println("Down is" + downVertical);
+    int xCoor;
+    int yCoor;
+    int value;
+    int count = 0;
+  // keep asking for random coordinates until we find one that hasn't been used yet
+  // we have the count under 20 to prevent the method from ending up in a loop
+  // if it can't get a random number we haven't located a ship on
+    do {
+      xCoor = rand.nextInt(6);
+      yCoor = rand.nextInt(6);
+      count += 1;
+      value = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
+    } while (checkUsed(usedNum,value) && count < 20);
+
+    System.out.println("Coordinates: " + xCoor + "," + yCoor);
+  // this runs through checking if we can put the ship horizontally R/L
+  // or vertical R/L
+  // if it can't find any way to place the ship, it will just not do it
+    if(!checkRightHorizontal(xCoor, yCoor, num, higherBound, usedNum)){
+      boolean downVertical = checkDownVertical(xCoor, yCoor, num, higherBound, usedNum);
       if(!downVertical){
-        boolean leftHorizontal = checkLeftHorizontal(xCoor, yCoor, num, lowerBound, used);
+        boolean leftHorizontal = checkLeftHorizontal(xCoor, yCoor, num, lowerBound, usedNum);
         if(!leftHorizontal){
-          boolean upVertical = checkUpVertical(xCoor, yCoor, num, lowerBound, used);
+          boolean upVertical = checkUpVertical(xCoor, yCoor, num, lowerBound, usedNum);
           if(!leftHorizontal){
             System.out.println("Can't find placement");
           }
@@ -141,212 +154,185 @@ public abstract class Ship{
       }
     }
 
-    // if y is lower than numOfShots to sink, add ships veritcally, checking against used array
-    // and add to used array
-    System.out.println("printing out location at end of method");
+  //prints out the location of the ships on the command line
+  // to make it easier to debug if something went wrong
+    System.out.println("printing out locations of the ship");
     ArrayList<int[]> locations = getLocation();
-      for(int[] location : locations){
-        System.out.println(location[0] + "," + location[1]);
-      }
-
-    //ArrayList<Ship> ships = board.getShipsOnBoard();
-    //ArrayList<int[]> shipCoordinates = new ArrayList<int[]>();
-    //for(Ship ship: ships){
-      //ArrayList<int[]> locations = ship.getLocation();
-      //for(int[] location : locations){
-        //shipCoordinates.add(location);
-      //}
+    for(int[] location : locations){
+      System.out.println(location[0] + "," + location[1]);
     }
+  }
 
-    public boolean checkRightHorizontal(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer>used){
-      System.out.println("in right horz");
-      ArrayList<int[]> tempValues = new ArrayList<int[]>();
-      System.out.println("xcoor:" + xCoor + " num:" + num + " highbound" + higherBound);
-      if(xCoor + num - 1 <= higherBound){
-        int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-        System.out.println("I'm tempValue" + tempValue);
-        int[] tempArray = new int[2];
-        if(!checkUsed(used,tempValue)){
-          System.out.println("I'm not used!!!!");
-          tempArray[0] = xCoor;
-          tempArray[1]= yCoor;
-          tempValues.add(tempArray);
-          used.add(tempValue);
-          System.out.println("added first value to tempValues and used");
-          for(int i = 1; i < num; i++){
-            int[] temp = new int[2];
-            System.out.println("horz i = " + i);
-            tempValue = Integer.parseInt(Integer.toString((xCoor + i)) + Integer.toString(yCoor));
-            System.out.println("tempvalue within for statement" + tempValue);
-            if(!checkUsed(used,tempValue)){
-              System.out.println("I'm not used Round" + i);
-              temp[0] = xCoor + i;
-              temp[1]= yCoor;
-              System.out.println("Temp array 0 value:" + temp[0] + " and 1 value" + temp[1]);
-              tempValues.add(temp);
-              used.add(tempValue);
-            }
-            else{
-              return false;
-            }
+  /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that the ship can be added num sports from xCoor,yCoor to the
+   * right horizontally, it returns true
+   * @param xCoor, int, x coordinate for our starting value
+   * @param yCoor, int, y coordinate for our starting value
+   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
+   * @param higherBound, int, the largest x or y could be
+   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
+   * @return true or false if we can place the ship horizontally, adding to the right
+  */
+  public boolean checkRightHorizontal(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer>used){
+    ArrayList<int[]> tempValues = new ArrayList<int[]>();
+    if(xCoor + num - 1 <= higherBound){
+      int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
+      // if we haven't used the coordinates, iterate through the coordinates to the right horziontally
+      if(!checkUsed(used,tempValue)){
+        for(int i = 0; i < num; i++){
+          int[] temp = new int[2];
+          tempValue = Integer.parseInt(Integer.toString((xCoor + i)) + Integer.toString(yCoor));
+          // make sure they haven't been used already
+          if(!checkUsed(used,tempValue)){
+            temp[0] = xCoor + i;
+            temp[1]= yCoor;
+            tempValues.add(temp);
+            used.add(tempValue);
           }
-        System.out.println("setting location");
+          else{
+            return false;
+          }
+        }
+      // set our temporary array to the actual locations for the ship
+      location = tempValues;
+      return true;
+      }
+    }
+    return false;
+  }
+
+    /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that the ship can be added num sports from xCoor,yCoor to the
+   * left horizontally, it returns true
+   * @param xCoor, int, x coordinate for our starting value
+   * @param yCoor, int, y coordinate for our starting value
+   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
+   * @param lowerBound, int, the smallest x or y could be
+   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
+   * @return true or false if we can place the ship horizontally, adding to the left
+  */
+  public boolean checkLeftHorizontal(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer>used){
+    ArrayList<int[]> tempValues = new ArrayList<int[]>();
+    // check that we have space to add locations to the left of coordinate
+    if(xCoor - num + 1 >= lowerBound){
+      int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
+      if(!checkUsed(used,tempValue)){
+        // iterate through each square to the left and make sure it's not in use
+        for(int i = 0; i < num; i++){
+          int[] temp = new int[2];
+          tempValue = Integer.parseInt(Integer.toString((xCoor - i)) + Integer.toString(yCoor));
+          if(!checkUsed(used,tempValue)){
+            temp[0] = xCoor - i;
+            temp[1]= yCoor;
+            tempValues.add(temp);
+            used.add(tempValue);
+          }
+          else{
+            return false;
+          }
+        }
         location = tempValues;
         return true;
-        }
       }
-      return false;
     }
+    return false;
+  }
 
-    public boolean checkLeftHorizontal(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer>used){
-      System.out.println("in left horz");
-      System.out.println("xcoor:" + xCoor + " num:" + num + " lowbound" + lowerBound);
-      ArrayList<int[]> tempValues = new ArrayList<int[]>();
-      if(xCoor - num + 1 >= lowerBound){
-        System.out.println("doing this left");
-        int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-        int[] tempArray = new int[2];
-        if(!checkUsed(used,tempValue)){
-          System.out.println("I'm not used!");
-          tempArray[0] = xCoor;
-          tempArray[1]= yCoor;
-          tempValues.add(tempArray);
-          used.add(tempValue);
-          for(int i = 1; i < num; i++){
-            int[] temp = new int[2];
-            tempValue = Integer.parseInt(Integer.toString((xCoor - i)) + Integer.toString(yCoor));
-            System.out.println("tempvalue within for statement" + tempValue);
-            if(!checkUsed(used,tempValue)){
-              System.out.println("I'm not used Round" + i);
-              temp[0] = xCoor - i;
-              temp[1]= yCoor;
-              System.out.println("Temp array 0 value:" + temp[0] + "and 1 value" + temp[1]);
-              tempValues.add(temp);
-              used.add(tempValue);
-            }
-            else{
-              return false;
-            }
+    /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that the ship can be added num sports from xCoor,yCoor to the
+   * south vertically, it returns true
+   * @param xCoor, int, x coordinate for our starting value
+   * @param yCoor, int, y coordinate for our starting value
+   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
+   * @param higherBound, int, the largest x or y could be
+   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
+   * @return true or false if we can place the ship vertically, adding down
+  */
+  public boolean checkDownVertical(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer> used){
+    ArrayList<int[]> tempValues = new ArrayList<int[]>();
+    // check that we have the space to place ships down
+    if(yCoor + num -1 <= higherBound){
+      int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
+      if(!checkUsed(used,tempValue)){
+        // iterate through and check the spaces against the used spaces
+        for(int i = 0; i < num; i++){
+          int[] temp = new int[2];
+          tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString((yCoor + i)));
+          if(!checkUsed(used,tempValue)){
+            temp[0] = xCoor;
+            temp[1]= yCoor + i;
+            tempValues.add(temp);
+            used.add(tempValue);
           }
-          location = tempValues;
-          return true;
-        }
-      }
-      return false;
-    }
-
-    public boolean checkDownVertical(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer> used){
-      System.out.println("in down vert");
-      ArrayList<int[]> tempValues = new ArrayList<int[]>();
-      System.out.println("yCoor:" + yCoor + "num" + num + "higherBound:" + higherBound);
-      if(yCoor + num -1 <= higherBound){
-        int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-        System.out.println("This is tempValue" + tempValue);
-        int[] tempArray = new int[2];
-        if(!checkUsed(used,tempValue)){
-          System.out.println("I'm not used!");
-          tempArray[0] = xCoor;
-          tempArray[1]= yCoor;
-          tempValues.add(tempArray);
-          used.add(tempValue);
-          for(int i = 1; i < num; i++){
-            int[] temp = new int[2];
-            tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString((yCoor + i)));
-            System.out.println("tempvalue within for statement" + tempValue);
-            if(!checkUsed(used,tempValue)){
-              System.out.println("I'm not used Round" + i);
-              temp[0] = xCoor;
-              temp[1]= yCoor + i;
-              System.out.println("Temp array 0 value:" + temp[0] + " and 1 value" + temp[1]);
-              tempValues.add(temp);
-              used.add(tempValue);
-            }
-            else{
-              return false;
-            }
+          else{
+            return false;
           }
-          location = tempValues;
-          return true;
         }
+        location = tempValues;
+        return true;
       }
-      return false;
     }
+    return false;
+  }
 
-
-    public boolean checkUpVertical(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer> used){
-      System.out.println("in up vert");
-      ArrayList<int[]> tempValues = new ArrayList<int[]>();
-      System.out.println("ycoor" + yCoor + "num" + num + "lowerBound" + lowerBound);
-      if(yCoor - num + 1 <= lowerBound){
-        int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-        System.out.println("I'm tempvalue" + tempValue);
-        int[] tempArray = new int[2];
-        if(!checkUsed(used,tempValue)){
-          System.out.println("I'm not used!");
-          tempArray[0] = xCoor;
-          tempArray[1]= yCoor;
-          tempValues.add(tempArray);
-          used.add(tempValue);
-          for(int i = 1; i < num; i++){
-            int[] temp = new int[2];
-            tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString((yCoor - i)));
-            System.out.println("tempvalue within for statement" + tempValue);
-            if(!checkUsed(used,tempValue)){
-              System.out.println("I'm not used Round" + i);
-              temp[0] = xCoor;
-              temp[1]= yCoor - i;
-              System.out.println("Temp array 0 value:" + temp[0] + " and 1 value" + temp[1]);
-              tempValues.add(temp);
-              used.add(tempValue);
-            }
-            else{
-              return false;
-            }
+    /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that the ship can be added num sports from xCoor,yCoor to the
+   * north vertically, it returns true
+   * @param xCoor, int, x coordinate for our starting value
+   * @param yCoor, int, y coordinate for our starting value
+   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
+   * @param lowerBound, int, the smallest x or y could be
+   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
+   * @return true or false if we can place the ship vertically, adding upwards
+  */
+  public boolean checkUpVertical(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer> used){
+    ArrayList<int[]> tempValues = new ArrayList<int[]>();
+    // check if we have the space to add ships above our current coordinate
+    if(yCoor - num + 1 >= lowerBound){
+      int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
+      if(!checkUsed(used,tempValue)){
+        // iterate through the values to the north, check they aren't used
+        for(int i = 0; i < num; i++){
+          int[] temp = new int[2];
+          tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString((yCoor - i)));
+          if(!checkUsed(used,tempValue)){
+            temp[0] = xCoor;
+            temp[1]= yCoor - i;
+            tempValues.add(temp);
+            used.add(tempValue);
           }
-          location = tempValues;
-          return true;
+          else{
+            return false;
+          }
         }
+        location = tempValues;
+        return true;
       }
-      return false;
     }
+    return false;
+  }
 
-    public boolean checkUsed(ArrayList<Integer> used, int num){
-      System.out.println("Size of used:" + used.size() + "and our num is" + num);
-      for (int o = 0; o < used.size() - 1; o++) {
-        if(used.get(o) == num){
-          return true;
-        }
+    /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that num is within the used locations, returns true
+   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
+   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * @return true or false if we found num within the used ArrayList
+  */
+  public boolean checkUsed(ArrayList<Integer> used, int num){
+    for (int o = 0; o < used.size() - 1; o++) {
+      if(used.get(o) == num){
+        return true;
       }
-      return false;
     }
-    // switch(num) {
-    // case 1 :
-    //   setLocation(new int[]{0,0});
-    //   break;
-    // case 2 :
-    //   setLocation(new int[]{1,0});
-    //   setLocation(new int[]{2,0});
-    //   break;
-    //  case 3 :
-    //   setLocation(new int[]{2,1});
-    //   setLocation(new int[]{2,2});
-    //   setLocation(new int[]{2,3});
-    //   break;
-    //  case 4 :
-    //   setLocation(new int[]{4,0});
-    //   setLocation(new int[]{4,1});
-    //   setLocation(new int[]{4,2});
-    //   setLocation(new int[]{4,3});
-    //   break;
-    //   case 5 :
-    //   setLocation(new int[]{0,1});
-    //   setLocation(new int[]{0,2});
-    //   setLocation(new int[]{0,3});
-    //   setLocation(new int[]{0,4});
-    //   setLocation(new int[]{0,5});
-    //   break;
-    //   default :
-    //   break;
-    // }
-  //}
+    return false;
+  }
 }

@@ -180,6 +180,7 @@ public class TrackingBoard extends Board {
     if(!isShip.isEmpty()){
       board[yCoor][xCoor].setFont(new Font("Arial", Font.BOLD, 20));
       board[yCoor][xCoor].setText("H");
+      board[yCoor][xCoor].setForeground(Color.BLACK);
       opposingBoard.setHitsLeft(opposingBoard.getHitsLeft() - 1);
       Ship ship = isShip.get(true);
       ship.setHits(ship.getHits() +1 );
@@ -189,20 +190,27 @@ public class TrackingBoard extends Board {
     }
     else{
       board[yCoor][xCoor].setFont(new Font("Arial", Font.BOLD, 20));
+      board[yCoor][xCoor].setForeground(Color.BLACK);
       board[yCoor][xCoor].setText("X");
       usedMoves.add(value);
     }
   }
 
+     /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that num is within the used locations, returns true
+   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
+   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * @return true or false if we found num within the used ArrayList
+  */
   public boolean checkUsedMoves(ArrayList<Integer> used, int num){
-      System.out.println("Size of used:" + used.size() + "and our num is" + num);
-      for (int o = 0; o < used.size() - 1; o++) {
-        if(used.get(o) == num){
-          return true;
-        }
+    for (int o = 0; o < used.size() - 1; o++) {
+      if(used.get(o) == num){
+        return true;
       }
-      return false;
     }
+    return false;
+  }
 
   /**
    * This method checks to see if a user is won and allows the game to end
