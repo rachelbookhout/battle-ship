@@ -196,14 +196,14 @@ public class TrackingBoard extends Board {
     }
   }
 
-     /**
+    /**
    * This method checks against an arraylist of used locations for the ships
    * and if it finds that num is within the used locations, returns true
    * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
    * @param used, ArrayList<int[]>, contains a list of the integers we have used
    * @return true or false if we found num within the used ArrayList
   */
-  public boolean checkUsedMoves(ArrayList<Integer> used, int num){
+  private boolean checkUsedMoves(ArrayList<Integer> used, int num){
     for (int o = 0; o < used.size() - 1; o++) {
       if(used.get(o) == num){
         return true;

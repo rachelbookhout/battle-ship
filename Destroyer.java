@@ -39,17 +39,6 @@ public class Destroyer extends Ship {
     return numOfShotsToSink;
   }
 
-  /**
-   * This method is check if the shot has sunk
-   * @return true or false - returns if the number of shots the ship took are the same
-   * as its capacity to take hits
-  */
-  public boolean isShipSunk(){
-    if(this.hits == numOfShotsToSink){
-      return true;
-    }
-    return false;
-  }
 
   /**
    * This method is get the Color associated with a BattleShip

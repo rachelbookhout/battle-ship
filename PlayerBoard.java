@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.*;
 
 public class PlayerBoard extends Board {
-  public Ship tempShip;
+  private Ship tempShip;
   PlaceShip ps = new PlaceShip();
 
  /**
@@ -138,7 +138,7 @@ public class PlayerBoard extends Board {
    * and verifies that they are in order which means it's a valid placement
    * @param ship, Ship -> the ship we are trying to place
   */
-  private boolean checkLocation(Ship ship){
+  public boolean checkLocation(Ship ship){
     if (ship.getLocation().size() >= ship.getShotsToSink()){
       ArrayList<int[]> locations = ship.getLocation();
       // borrowed from https://stackoverflow.com/questions/19596950/sort-an-arraylist-of-integer-arrays

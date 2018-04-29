@@ -175,7 +175,7 @@ public abstract class Ship{
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship horizontally, adding to the right
   */
-  public boolean checkRightHorizontal(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer>used){
+  private boolean checkRightHorizontal(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer>used){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     if(xCoor + num - 1 <= higherBound){
       int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
@@ -215,7 +215,7 @@ public abstract class Ship{
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship horizontally, adding to the left
   */
-  public boolean checkLeftHorizontal(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer>used){
+  private boolean checkLeftHorizontal(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer>used){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     // check that we have space to add locations to the left of coordinate
     if(xCoor - num + 1 >= lowerBound){
@@ -254,7 +254,7 @@ public abstract class Ship{
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship vertically, adding down
   */
-  public boolean checkDownVertical(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer> used){
+  private boolean checkDownVertical(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer> used){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     // check that we have the space to place ships down
     if(yCoor + num -1 <= higherBound){
@@ -293,7 +293,7 @@ public abstract class Ship{
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship vertically, adding upwards
   */
-  public boolean checkUpVertical(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer> used){
+  private boolean checkUpVertical(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer> used){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     // check if we have the space to add ships above our current coordinate
     if(yCoor - num + 1 >= lowerBound){
@@ -327,7 +327,7 @@ public abstract class Ship{
    * @param used, ArrayList<int[]>, contains a list of the integers we have used
    * @return true or false if we found num within the used ArrayList
   */
-  public boolean checkUsed(ArrayList<Integer> used, int num){
+  private boolean checkUsed(ArrayList<Integer> used, int num){
     for (int o = 0; o < used.size() - 1; o++) {
       if(used.get(o) == num){
         return true;
