@@ -114,7 +114,7 @@ public abstract class Ship{
    * used by the computer to set up the board
    * @param board, will be a PlayerBoard where we are placing the ships
   */
-  public void setRandomLocation(Board board){
+  private void setRandomLocation(Board board){
   // get the values that are setting our boundries on what numbers
   // we can use for coordinates
     int lowerBound = 0;

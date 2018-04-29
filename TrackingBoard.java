@@ -97,7 +97,7 @@ public class TrackingBoard extends Board {
    * it checks if a ship was hit or not
    * @param button - JButton, the button the player pressed to bomb
   */
-  public void decideShipFate(JButton button){
+  private void decideShipFate(JButton button){
     // get the text off of the button which will tell us which one was pressed
     String text = button.getText();
     int index = text.indexOf(',');
