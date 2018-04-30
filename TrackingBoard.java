@@ -119,8 +119,6 @@ public class TrackingBoard extends Board {
       playerBoard.setHitsLeft(playerBoard.getHitsLeft() - 1);
       Ship ship = isShipInLocation.get(true);
       ship.setHits(ship.getHits() +1 );
-      board[secondNumber][firstNumber].setForeground(isShipInLocation.get(true).getColor());
-      board[secondNumber][firstNumber].setBackground(isShipInLocation.get(true).getColor());
       board[secondNumber][firstNumber].setOpaque(true);
       forPlayer.updateDisplay(playerBoard.getShipsOnBoard());
       board[secondNumber][firstNumber].removeActionListener(bombShip);

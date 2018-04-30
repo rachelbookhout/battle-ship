@@ -40,6 +40,17 @@ public abstract class Board extends JPanel{
   }
 
   /**
+  * This method is to recalculate hits left in case a ship wasn't created
+  */
+  public void resetHitsLeft(){
+    int count = 0;
+    for(Ship ship: ships){
+      count += ship.getLocation().size();
+    }
+    hitsLeft = count;
+  }
+
+  /**
    * This method sets the number of hits left
    * @param hits - integer, new number of hits left
   */

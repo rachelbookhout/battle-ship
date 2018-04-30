@@ -29,6 +29,9 @@ public class ShipCounter extends JPanel{
   private void createDisplay(ArrayList<Ship> ships){
     this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     for(Ship ship: ships){
+      if(ship.getLocation().size() == 0){
+        continue;
+      }
       JPanel panel = new JPanel();
       panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
       JLabel name = new JLabel(ship.getName());

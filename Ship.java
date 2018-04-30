@@ -114,7 +114,7 @@ public abstract class Ship{
    * used by the computer to set up the board
    * @param board, will be a PlayerBoard where we are placing the ships
   */
-  private void setRandomLocation(Board board){
+  public void setRandomLocation(Board board){
   // get the values that are setting our boundries on what numbers
   // we can use for coordinates
     int lowerBound = 0;
@@ -136,24 +136,26 @@ public abstract class Ship{
       count += 1;
       value = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
     } while (checkUsed(usedNum,value) && count < 20);
-
-    System.out.println("Coordinates: " + xCoor + "," + yCoor);
-  // this runs through checking if we can put the ship horizontally R/L
-  // or vertical R/L
-  // if it can't find any way to place the ship, it will just not do it
-    if(!checkRightHorizontal(xCoor, yCoor, num, higherBound, usedNum)){
-      boolean downVertical = checkDownVertical(xCoor, yCoor, num, higherBound, usedNum);
-      if(!downVertical){
-        boolean leftHorizontal = checkLeftHorizontal(xCoor, yCoor, num, lowerBound, usedNum);
-        if(!leftHorizontal){
-          boolean upVertical = checkUpVertical(xCoor, yCoor, num, lowerBound, usedNum);
+    // check that our number isn't being used in case we couldn't get a random number
+    // we haven't used before
+    if (!checkUsed(usedNum, value)){
+      System.out.println("Coordinates: " + xCoor + "," + yCoor);
+      // this runs through checking if we can put the ship horizontally R/L
+      // or vertical R/L
+      // if it can't find any way to place the ship, it will just not do it
+      if(!checkRightHorizontal(xCoor, yCoor, num, higherBound, usedNum)){
+        boolean downVertical = checkDownVertical(xCoor, yCoor, num, higherBound, usedNum);
+        if(!downVertical){
+          boolean leftHorizontal = checkLeftHorizontal(xCoor, yCoor, num, lowerBound, usedNum);
           if(!leftHorizontal){
-            System.out.println("Can't find placement");
+            boolean upVertical = checkUpVertical(xCoor, yCoor, num, lowerBound, usedNum);
+            if(!leftHorizontal){
+              System.out.println("Can't find placement");
+            }
           }
         }
       }
     }
-
   //prints out the location of the ships on the command line
   // to make it easier to debug if something went wrong
     System.out.println("printing out locations of the ship");

@@ -85,7 +85,7 @@ class BattleShipGame{
   */
   private void setUpShips(){
     readytoPlayButton.setVisible(false);
-    dialogueBox.setText("Click a button to choose the ship you want to place");
+    dialogueBox.setText("Click Carrier button to get started placing ships!");
     createShipButtons();
     communicationPanel.add(carrierButton);
     communicationPanel.add(clearButton);
@@ -212,6 +212,7 @@ class BattleShipGame{
     // send the playerBoard and the computer's playerBoard to trackingBoard
     // so we can track what we need to do to them
     playerTrackingBoard.setPlayerBoard(computerBoard);
+    computerBoard.resetHitsLeft();
     playerTrackingBoard.setOpponentBoard(playerBoard);
     playerTrackingBoard.addEvents(dimensions);
     playerTrackingBoard.getDialogueBoxForGame(dialogueBox);
