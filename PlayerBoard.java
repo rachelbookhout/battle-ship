@@ -25,7 +25,6 @@ public class PlayerBoard extends Board {
  */
   public PlayerBoard(int dimensions){
       super(dimensions);
-      addEvents(dimensions);
   }
 
   /**
@@ -119,10 +118,9 @@ public class PlayerBoard extends Board {
         board[s[1]][s[0]].setForeground(ship.getColor());
         board[s[1]][s[0]].setText("S");
       }
-        //removeEvents();
+        removeEvents();
     };
   }
-
     /**
    * This remove all locations for the Ship and changes the display so it can be chosen again
   */
@@ -134,7 +132,10 @@ public class PlayerBoard extends Board {
       board[s[1]][s[0]].setOpaque(false);
       board[s[1]][s[0]].setEnabled(true);
       board[s[1]][s[0]].setText(s[0] + "," + s[1]);
-      //addEvents(dimensions);
+      if(tempShip.getStatus() == Ship.Status.PLACED){
+        addEvents(dimensions);
+        tempShip.setStatus(Ship.Status.CREATED);
+      }
     }
     tempShip.removeLocations();
   }

@@ -107,6 +107,7 @@ class BattleShipGame{
         // this connects the ship to the player board so we can do the checks on its location
         // as the user chooses it. It also changes the text.
         addShipToBoard(carrier);
+        playerBoard.addEvents(dimensions);
         // disappear the carrier button
         carrierButton.setVisible(false);
         communicationPanel.remove(carrierButton);
