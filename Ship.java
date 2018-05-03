@@ -18,7 +18,6 @@ public abstract class Ship{
   protected Status status;
   protected String name;
   protected Color color;
-
   /**
    * This constructor creates the default Ship
   */
@@ -114,14 +113,13 @@ public abstract class Ship{
    * used by the computer to set up the board
    * @param board, will be a PlayerBoard where we are placing the ships
   */
-  public void setRandomLocation(Board board){
+  public void setRandomLocation(PlayerBoard board){
   // get the values that are setting our boundries on what numbers
   // we can use for coordinates
     int lowerBound = 0;
     int higherBound = 5;
     int num = getShotsToSink();
   // create an arrayList to keep track of the values we have used
-    ArrayList<Integer> usedNum = new ArrayList<Integer>();
     Random rand = new Random();
     int xCoor;
     int yCoor;
@@ -135,20 +133,20 @@ public abstract class Ship{
       yCoor = rand.nextInt(6);
       count += 1;
       value = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-    } while (checkUsed(usedNum,value) && count < 20);
+    } while (board.checkUsed(value) && count < 50);
     // check that our number isn't being used in case we couldn't get a random number
     // we haven't used before
-    if (!checkUsed(usedNum, value)){
+    if (!board.checkUsed(value)){
       System.out.println("Coordinates: " + xCoor + "," + yCoor);
       // this runs through checking if we can put the ship horizontally R/L
       // or vertical R/L
       // if it can't find any way to place the ship, it will just not do it
-      if(!checkRightHorizontal(xCoor, yCoor, num, higherBound, usedNum)){
-        boolean downVertical = checkDownVertical(xCoor, yCoor, num, higherBound, usedNum);
+      if(!checkRightHorizontal(xCoor, yCoor, num, higherBound, board)){
+        boolean downVertical = checkDownVertical(xCoor, yCoor, num, higherBound, board);
         if(!downVertical){
-          boolean leftHorizontal = checkLeftHorizontal(xCoor, yCoor, num, lowerBound, usedNum);
+          boolean leftHorizontal = checkLeftHorizontal(xCoor, yCoor, num, lowerBound, board);
           if(!leftHorizontal){
-            boolean upVertical = checkUpVertical(xCoor, yCoor, num, lowerBound, usedNum);
+            boolean upVertical = checkUpVertical(xCoor, yCoor, num, lowerBound, board);
             if(!leftHorizontal){
               System.out.println("Can't find placement");
             }
@@ -173,25 +171,24 @@ public abstract class Ship{
    * @param yCoor, int, y coordinate for our starting value
    * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
    * @param higherBound, int, the largest x or y could be
-   * @param used, ArrayList<int[]>, contains a list of the integers we have used
-   * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
+   * @param board, PlayerBoard, connects us to the board that is storing what coordinates we have used
    * @return true or false if we can place the ship horizontally, adding to the right
   */
-  private boolean checkRightHorizontal(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer>used){
+  private boolean checkRightHorizontal(int xCoor, int yCoor, int num, int higherBound, PlayerBoard board){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     if(xCoor + num - 1 <= higherBound){
       int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
       // if we haven't used the coordinates, iterate through the coordinates to the right horziontally
-      if(!checkUsed(used,tempValue)){
+      if(!board.checkUsed(tempValue)){
         for(int i = 0; i < num; i++){
           int[] temp = new int[2];
           tempValue = Integer.parseInt(Integer.toString((xCoor + i)) + Integer.toString(yCoor));
           // make sure they haven't been used already
-          if(!checkUsed(used,tempValue)){
+          if(!board.checkUsed(tempValue)){
             temp[0] = xCoor + i;
             temp[1]= yCoor;
             tempValues.add(temp);
-            used.add(tempValue);
+            board.addLocationToUsed(tempValue);
           }
           else{
             return false;
@@ -213,25 +210,25 @@ public abstract class Ship{
    * @param yCoor, int, y coordinate for our starting value
    * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
    * @param lowerBound, int, the smallest x or y could be
-   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * @param board, PlayerBoard, connects us to the board that is storing what coordinates we have used
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship horizontally, adding to the left
   */
-  private boolean checkLeftHorizontal(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer>used){
+  private boolean checkLeftHorizontal(int xCoor, int yCoor, int num, int lowerBound, PlayerBoard board){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     // check that we have space to add locations to the left of coordinate
     if(xCoor - num + 1 >= lowerBound){
       int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-      if(!checkUsed(used,tempValue)){
+      if(!board.checkUsed(tempValue)){
         // iterate through each square to the left and make sure it's not in use
         for(int i = 0; i < num; i++){
           int[] temp = new int[2];
           tempValue = Integer.parseInt(Integer.toString((xCoor - i)) + Integer.toString(yCoor));
-          if(!checkUsed(used,tempValue)){
+          if(!board.checkUsed(tempValue)){
             temp[0] = xCoor - i;
             temp[1]= yCoor;
             tempValues.add(temp);
-            used.add(tempValue);
+            board.addLocationToUsed(tempValue);
           }
           else{
             return false;
@@ -252,25 +249,25 @@ public abstract class Ship{
    * @param yCoor, int, y coordinate for our starting value
    * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
    * @param higherBound, int, the largest x or y could be
-   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * @param board, PlayerBoard, connects us to the board that is storing what coordinates we have used
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship vertically, adding down
   */
-  private boolean checkDownVertical(int xCoor, int yCoor, int num, int higherBound, ArrayList<Integer> used){
+  private boolean checkDownVertical(int xCoor, int yCoor, int num, int higherBound, PlayerBoard board){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     // check that we have the space to place ships down
     if(yCoor + num -1 <= higherBound){
       int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-      if(!checkUsed(used,tempValue)){
+      if(!board.checkUsed(tempValue)){
         // iterate through and check the spaces against the used spaces
         for(int i = 0; i < num; i++){
           int[] temp = new int[2];
           tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString((yCoor + i)));
-          if(!checkUsed(used,tempValue)){
+          if(!board.checkUsed(tempValue)){
             temp[0] = xCoor;
             temp[1]= yCoor + i;
             tempValues.add(temp);
-            used.add(tempValue);
+            board.addLocationToUsed(tempValue);
           }
           else{
             return false;
@@ -291,47 +288,31 @@ public abstract class Ship{
    * @param yCoor, int, y coordinate for our starting value
    * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
    * @param lowerBound, int, the smallest x or y could be
-   * @param used, ArrayList<int[]>, contains a list of the integers we have used
+   * @param board, PlayerBoard, connects us to the board that is storing what coordinates we have used
    * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
    * @return true or false if we can place the ship vertically, adding upwards
   */
-  private boolean checkUpVertical(int xCoor, int yCoor, int num, int lowerBound, ArrayList<Integer> used){
+  private boolean checkUpVertical(int xCoor, int yCoor, int num, int lowerBound, PlayerBoard board){
     ArrayList<int[]> tempValues = new ArrayList<int[]>();
     // check if we have the space to add ships above our current coordinate
     if(yCoor - num + 1 >= lowerBound){
       int tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString(yCoor));
-      if(!checkUsed(used,tempValue)){
+      if(!board.checkUsed(tempValue)){
         // iterate through the values to the north, check they aren't used
         for(int i = 0; i < num; i++){
           int[] temp = new int[2];
           tempValue = Integer.parseInt(Integer.toString(xCoor) + Integer.toString((yCoor - i)));
-          if(!checkUsed(used,tempValue)){
+          if(!board.checkUsed(tempValue)){
             temp[0] = xCoor;
             temp[1]= yCoor - i;
             tempValues.add(temp);
-            used.add(tempValue);
+            board.addLocationToUsed(tempValue);
           }
           else{
             return false;
           }
         }
         location = tempValues;
-        return true;
-      }
-    }
-    return false;
-  }
-
-    /**
-   * This method checks against an arraylist of used locations for the ships
-   * and if it finds that num is within the used locations, returns true
-   * @param num, int, numberOfShotsToSink or how many spaces our ship takes up
-   * @param used, ArrayList<int[]>, contains a list of the integers we have used
-   * @return true or false if we found num within the used ArrayList
-  */
-  private boolean checkUsed(ArrayList<Integer> used, int num){
-    for (int o = 0; o < used.size() - 1; o++) {
-      if(used.get(o) == num){
         return true;
       }
     }

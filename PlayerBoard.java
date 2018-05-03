@@ -11,8 +11,12 @@ import java.io.*;
 import java.util.*;
 
 public class PlayerBoard extends Board {
+  // temp ship keeps track of which ship we are trying to place
   private Ship tempShip;
   PlaceShip ps = new PlaceShip();
+  // this keeps track of all the coordinates that we have placed ships at
+  ArrayList<Integer> usedNumbers = new ArrayList<Integer>();
+
 
  /**
   * This constructor is to create our board and takes everything from the Board class
@@ -115,7 +119,7 @@ public class PlayerBoard extends Board {
         board[s[1]][s[0]].setForeground(ship.getColor());
         board[s[1]][s[0]].setText("S");
       }
-        removeEvents();
+        //removeEvents();
     };
   }
 
@@ -129,6 +133,8 @@ public class PlayerBoard extends Board {
       board[s[1]][s[0]].setBackground(Color.WHITE);
       board[s[1]][s[0]].setOpaque(false);
       board[s[1]][s[0]].setEnabled(true);
+      board[s[1]][s[0]].setText(s[0] + "," + s[1]);
+      //addEvents(dimensions);
     }
     tempShip.removeLocations();
   }
@@ -190,6 +196,30 @@ public class PlayerBoard extends Board {
     return false;
   }
 
+  /**
+   * This method checks against an arraylist of used locations for the ships
+   * and if it finds that num is within the used locations, returns true
+   * @param num, int, coordinates of the spot we would like to place a ship
+   * all integers are placed as two digits, so coord 1,2 would be set as "12" in it
+   * @return true or false if we found num within the used ArrayList
+  */
+  public boolean checkUsed(int num){
+    for (int o = 0; o < usedNumbers.size() - 1; o++) {
+      if(usedNumbers.get(o) == num){
+        return true;
+      }
+    }
+    return false;
+  }
+
+    /**
+   * This method adds values to the usedNumbers ArrayList that stores coordinates
+   * that ships have been palced on
+   * @param num, int, coordinates we have placed a ship
+  */
+  public void addLocationToUsed(int num){
+    usedNumbers.add(num);
+  }
   /**
   * This class implements the action listener for a user clicking on a square
   * on the board. It places the ship

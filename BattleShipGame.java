@@ -255,6 +255,7 @@ class BattleShipGame{
     */
     public void actionPerformed(ActionEvent e) {
       if(ship.getStatus() == Ship.Status.PLACED){
+          playerBoard.removeEvents();
           doneButton.setVisible(false);
           clearButton.setVisible(false);
           panel.remove(doneButton);
